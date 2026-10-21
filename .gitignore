@@ -1,5 +1,5 @@
 __pycache__/
 *.pyc
 .DS_Store
-# paper stores never belong in this repo
+# personal paper store (set as the store to keep papers next to the code); never committed
 papers/

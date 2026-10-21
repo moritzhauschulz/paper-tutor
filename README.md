@@ -88,11 +88,14 @@ writes too):
 
 ## Where your data lives
 
-Nothing is stored in this repo. Papers go to the first of these that is set:
+Papers are never committed. Papers go to the first of these that is set:
 
 1. `$PAPER_TUTOR_HOME`
 2. `~/.config/paper-tutor/config.json` → `{"store": "/path"}`, which the skill asks about on first run
 3. `~/papers`
+
+To keep papers next to your clone, point the store at its `papers/` folder, which is gitignored:
+`python3 -I skills/paper-tutor/scripts/log.py set-store "$PWD/papers"`.
 
 On macOS, an iCloud Drive folder works well if you use several Macs. The scripts re-download
 files that iCloud has offloaded, and write each log entry in a single append so a sync never
