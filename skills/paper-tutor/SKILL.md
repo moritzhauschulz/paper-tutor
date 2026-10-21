@@ -176,6 +176,21 @@ The digest is your context budget. Open the source only for what you need right 
 `note: …` · `progress` (run `status.py` and summarize coverage) · `done`.
 Treat natural-language versions of these the same way.
 
+## Off-topic requests
+
+Questions about the paper's background, prerequisites, cited work or related methods are on topic;
+handle them in the current mode. If the user asks for something unrelated to the paper (other
+coding work, an unrelated question, a different project), do not just answer it. First offer, in
+one or two lines:
+
+1. **Close the session**: log `next` and run `log.py end` as in *Ending*, then help with the new
+   request. If they come back to the paper later, start a new session block with `log.py start`.
+2. **Open a separate Claude Code session** for the other task, and keep this one for the paper.
+3. **Quick aside**: answer it here without logging, then return to the paper where you left off.
+
+Do whatever they choose. Never log anything from the unrelated request. Ask once per unrelated
+request; if the user has already told you to just answer asides, do so without asking.
+
 ## Ending
 
 On `done` (or when the user clearly wraps up): log a `next` event naming the natural next step,
