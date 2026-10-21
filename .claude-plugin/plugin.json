@@ -1,0 +1,10 @@
+{
+  "name": "paper-tutor",
+  "version": "0.1.0",
+  "description": "Study research papers with Claude: fetches arXiv LaTeX, writes a careful digest, and tutors you in explain, explain+quiz, socratic and quiz modes at depth levels 1-10, with per-paper progress that persists across sessions.",
+  "author": { "name": "Moritz Hauschulz", "url": "https://github.com/moritzhauschulz" },
+  "homepage": "https://github.com/moritzhauschulz/paper-tutor",
+  "repository": "https://github.com/moritzhauschulz/paper-tutor",
+  "license": "MIT",
+  "keywords": ["arxiv", "papers", "tutor", "latex", "study", "quiz", "socratic"]
+}

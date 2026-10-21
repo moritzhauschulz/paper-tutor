@@ -1,0 +1,12 @@
+{
+  "name": "paper-tutor",
+  "owner": { "name": "Moritz Hauschulz", "url": "https://github.com/moritzhauschulz" },
+  "plugins": [
+    {
+      "name": "paper-tutor",
+      "source": "./",
+      "description": "Tutor for research papers: arXiv LaTeX fetch, digest, explain/socratic/quiz modes, persistent progress.",
+      "version": "0.1.0"
+    }
+  ]
+}

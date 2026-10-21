@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.DS_Store
+# paper stores never belong in this repo
+papers/
