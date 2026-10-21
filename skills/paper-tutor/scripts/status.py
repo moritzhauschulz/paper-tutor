@@ -104,7 +104,8 @@ def recap(ref):
     out = []
     authors = ", ".join(meta.get("authors", [])[:4]) + (" et al." if len(meta.get("authors", [])) > 4 else "")
     out.append(f"# {meta.get('title', meta.get('id'))}")
-    out.append(f"{authors}")
+    if authors:
+        out.append(authors)
     out.append(f"id {meta.get('id')} {meta.get('version', '')} · source: {meta.get('source_type')} "
                f"({meta.get('main_file', '')}) · dir: {d}")
     if meta.get("latest_version") and meta.get("latest_version") != meta.get("version"):

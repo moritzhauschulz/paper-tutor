@@ -71,7 +71,8 @@ ln -s "$PWD/paper-tutor/skills/paper-tutor" ~/.claude/skills/paper-tutor
 ### Fewer permission prompts
 
 Claude runs the bundled scripts and writes to your paper store. To skip approving each call, add
-allow rules to `~/.claude/settings.json`. Adjust the paths to your install and store:
+allow rules to `~/.claude/settings.json`. Adjust the paths to your install and store (`Edit(...)` covers
+writes too):
 
 ```json
 {
@@ -79,7 +80,6 @@ allow rules to `~/.claude/settings.json`. Adjust the paths to your install and s
     "allow": [
       "Bash(python3 -I ~/.claude/skills/paper-tutor/scripts/*)",
       "Read(~/papers/**)",
-      "Write(~/papers/**)",
       "Edit(~/papers/**)"
     ]
   }
