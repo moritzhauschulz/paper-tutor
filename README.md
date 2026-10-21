@@ -3,7 +3,7 @@
 A [Claude Code](https://claude.com/claude-code) skill for studying research papers.
 
 Give it an arXiv id. It fetches the **LaTeX source** (not the lossy PDF), reads the whole paper and
-writes a careful digest. It then tutors you at a depth you choose from 1 to 10, in four modes.
+writes a careful digest. It then tutors you at a depth you choose from 1 to 10, in five modes.
 Everything is kept per paper on your disk, so the next session picks up where the last one ended.
 
 ```
@@ -15,11 +15,15 @@ Everything is kept per paper on your disk, so the next session picks up where th
 
 ## Modes
 
+Every session opens with a short menu of these modes and the 1–10 levels.
+
+
 | Mode | What happens | Graded |
 |---|---|---|
 | **explain** | Claude explains, you ask questions | — |
 | **explain+quiz** | Claude explains one chunk, then asks 1–2 questions on it. If you miss one, it re-explains from a different angle and asks again | ✓ |
 | **socratic** | Claude explains nothing up front and never gives the answer. You work it out through a series of small questions | misconceptions logged |
+| **interrogate** | You lead: ask anything and drill down. Claude answers strictly from the paper, with locations, and says plainly when the paper doesn't answer | questions logged |
 | **quiz** | Questions only, no teaching. Also *teach-back* (you explain a result and it gets graded) and *re-quiz* of items you got wrong | ✓ |
 
 You can switch modes at any point ("let me work this out myself", "just tell me", "test me",

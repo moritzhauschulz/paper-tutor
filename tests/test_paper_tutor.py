@@ -229,8 +229,11 @@ class TestEndToEnd(unittest.TestCase):
         qid = q.split()[3].rstrip(":")
         self.run_cli("log.py", "quiz", pid, "--level", "6", "--where", "Eq. (1.2)", "--q", "retry",
                      "--answer", "because", "--grade", "correct", "--feedback", "ok", "--retry-of", qid)
+        self.run_cli("log.py", "event", pid, "--kind", "switch", "--text", "ask", "--where", "§A")
+        self.run_cli("log.py", "event", pid, "--kind", "asked", "--where", "Lemma A.1",
+                     "--text", "why is the lemma needed?")
         end = self.run_cli("log.py", "end", pid)
-        self.assertIn("explain → socratic", end)
+        self.assertIn("explain → socratic → interrogate", end)
         self.assertIn("1/2 correct", end)
 
         recs = [json.loads(x) for x in (d / "quiz.jsonl").read_text().splitlines()]
@@ -240,7 +243,7 @@ class TestEndToEnd(unittest.TestCase):
         status = self.run_cli("status.py", pid)
         self.assertIn("1 weak items", status)  # the retried item no longer counts
         self.assertIn("§2 Results", status)
-        self.assertIn("next unstarted section: §A", status)
+        self.assertIn("§A Proofs — interrogate", status)
         self.assertIn("Digest: missing", status)
 
         show = self.run_cli("lookup.py", pid, "show", "Thm 2.1")

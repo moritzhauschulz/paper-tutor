@@ -1,6 +1,6 @@
 ---
 name: paper-tutor
-description: Tutor the user through a research paper with persistent per-paper memory. Fetches LaTeX source from arXiv (HTML or PDF as fallback, or a local file), writes a careful digest, then teaches in four modes (explain, explain+quiz, socratic, quiz) at depth levels 1–10, logging progress so later sessions resume where they left off. Use when the user gives an arXiv id or URL, or says "explain this paper", "quiz me on", "socratic tutorial on", "let's continue with <paper>", "teach me <paper>", or runs /paper-tutor.
+description: Tutor the user through a research paper with persistent per-paper memory. Fetches LaTeX source from arXiv (HTML or PDF as fallback, or a local file), writes a careful digest, then teaches in five modes (explain, explain+quiz, socratic, quiz, interrogate) at depth levels 1–10, logging progress so later sessions resume where they left off. Use when the user gives an arXiv id or URL, or says "explain this paper", "quiz me on", "socratic tutorial on", "I have questions about <paper>", "let's continue with <paper>", "teach me <paper>", or runs /paper-tutor.
 ---
 
 # Paper tutor
@@ -53,6 +53,8 @@ Never put the store inside this skill's directory.
 
 ## Session start
 
+0. **No paper given** (bare `/paper-tutor`): run `status.py --list`, show the stored papers, and ask
+   which one to open or which new arXiv id/URL/file to fetch.
 1. Run `status.py <paper>`.
 2. **New paper (`NOT_FOUND`)**:
    - Run `fetch_paper.py <input>` and tell the user in one line what you got: title, source type
@@ -65,17 +67,44 @@ Never put the store inside this skill's directory.
    - Write `digest.md` in the paper folder following `reference/digest-template.md`. This is the
      main product of the first session: be precise, cite locations, flag gaps honestly.
    - Run `log.py digest <paper>`.
-   - Give a 3–5 sentence orientation, then ask for mode and level (suggest *explain+quiz* at
-     level 5 unless the user said otherwise).
+   - Give a 3–5 sentence orientation, then show the **options menu** (below), suggesting
+     *explain+quiz* at level 5 unless the user said otherwise.
 3. **Known paper**:
    - Read `digest.md` (not the full source). If the recap says the digest is missing, build it
      as above. If it is **STALE**, offer to update it against the new version first.
    - Show a short recap: last session (what was covered, open questions, "next"), number of weak
      quiz items, and the suggested next step from the recap.
-   - Offer: resume where they left off / re-quiz weak items / pick another section, mode or level.
+   - Then show the **options menu** with a concrete suggestion on top: resume where they left off
+     (with last mode and level), or re-quiz weak items if there are any.
 4. Once mode and level are settled: `log.py start <paper> --mode <mode> --level <N>`.
 
-If the user's first message already states mode, level or section, do not ask again; go.
+If the user's first message already states mode and level, skip the menu and go. If it states only
+one of them, show the menu with that one pre-filled.
+
+### Options menu
+
+Show this every time a session starts (fill in the suggestion line; keep the rest verbatim so users
+learn it). Keep it compact:
+
+```
+**Suggested:** <e.g. "resume at §4 — explain+quiz, level 6" or "explain+quiz, level 5">
+
+**Modes**
+1. explain       I explain section by section; you ask along the way
+2. explain+quiz  I explain a chunk, then ask 1–2 graded questions on it
+3. socratic      you work it out; I only ask guiding questions, never give the answer
+4. quiz          graded questions only (also: teach-back, re-quiz weak items)
+5. interrogate   you drive: ask anything, I answer strictly from the paper, with locations
+
+**Level 1–10**
+1–2 intuition, no equations · 3–4 setup + key equation · 5–6 full method + assumptions ·
+7–8 derivations, proof sketches · 9–10 line-by-line proofs, gaps, alternatives
+
+Reply e.g. "2 6", "socratic 8 on Thm 2", or "interrogate". You can switch mode or level anytime.
+```
+
+For **interrogate**, the level sets answer depth; default to the last used level (or 6) if the
+user does not give one.
 
 ## Modes
 
@@ -92,11 +121,15 @@ examples are in `reference/modes.md`; read it at the start of any session that i
   is stuck twice. End when the user states the insight themselves.
 - **quiz**: assessment only, no teaching until after each answer. Formats: `questions` (default),
   `teach-back` (user explains a result; you grade it), and re-quiz of weak items from the recap.
+- **interrogate**: the user leads. Answer exactly what was asked, then stop: no agenda, no "next
+  let's…". Check the source before answering anything detailed, and label each claim: *the paper
+  says* (location, short quote for key points) / *follows from* (location) / *not in the paper —
+  my view*. When the paper does not answer a question, say so plainly and log it as `open`.
 
 **One question at a time.** In every questioning mode, ask exactly one question, then stop and wait.
 
 **Switching** is allowed at any time, by name or in plain words ("let me work this out myself" →
-socratic, "just tell me" → explain, "test me" → quiz, "level 8", "go easier"). Keep the current
+socratic, "just tell me" → explain, "test me" → quiz, "I just want to ask questions" → interrogate, "level 8", "go easier"). Keep the current
 position and level unless told otherwise. Log the switch.
 
 ## Logging
@@ -109,6 +142,7 @@ single quotes, or `"$(cat <<'EOF' … EOF)"` for text containing single quotes).
 | session settled | `log.py start <paper> --mode M --level N` |
 | after **every** graded answer (explain+quiz, quiz) | `log.py quiz <paper> --level N --where REF --q Q --answer A --grade correct\|partial\|wrong --feedback F [--mode M] [--format questions\|teach-back] [--retry-of QID] [--followup]` |
 | a chunk / topic is finished | `log.py event <paper> --kind covered --where REF --text '…'` |
+| interrogate: each line of questioning | `log.py event <paper> --kind asked --where REF --text '<question, short>'` |
 | user raises something unresolved | `log.py event <paper> --kind open --where REF --text '…'` |
 | mode or level changes | `log.py event <paper> --kind switch --text 'socratic' --where REF` / `--kind level --text '8'` |
 | socratic: insight reached / misconception surfaced / hint given | `--kind insight` / `--kind misconception` / `--kind hint` |
@@ -135,7 +169,7 @@ The digest is your context budget. Open the source only for what you need right 
 
 ## In-session commands the user may type
 
-`level N` · `explain` / `explain+quiz` / `socratic` / `quiz` / `quiz teach-back` / `re-quiz` ·
+`level N` · `explain` / `explain+quiz` / `socratic` / `quiz` / `quiz teach-back` / `re-quiz` / `interrogate` · `menu` (show the options menu again) ·
 `deeper on <ref>` · `skip to §N` · `show <ref>` (print raw source) · `fig <ref>` · `cite <key>` ·
 `note: …` · `progress` (run `status.py` and summarize coverage) · `done`.
 Treat natural-language versions of these the same way.

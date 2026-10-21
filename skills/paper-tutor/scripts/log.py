@@ -13,8 +13,8 @@
   log.py index                      # rebuild <store>/index.md
   log.py set-store PATH             # choose where papers are stored
 
-KIND: covered | open | next | switch | level | insight | misconception | hint
-MODE: explain | explain+quiz | socratic | quiz
+KIND: covered | asked | open | next | switch | level | insight | misconception | hint
+MODE: explain | explain+quiz | socratic | quiz | interrogate
 GRADE: correct | partial | wrong
 Text arguments are stored verbatim (LaTeX is fine); quote them for the shell.
 """
@@ -29,8 +29,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import common  # noqa: E402
 
-MODES = ["explain", "explain+quiz", "socratic", "quiz"]
-KINDS = {"covered": "Covered", "open": "Open question", "next": "Next", "switch": "Switched to",
+MODES = ["explain", "explain+quiz", "socratic", "quiz", "interrogate"]
+KINDS = {"covered": "Covered", "asked": "Asked", "open": "Open question", "next": "Next", "switch": "Switched to",
          "level": "Level", "insight": "Insight", "misconception": "Misconception", "hint": "Hint given"}
 GRADES = ["correct", "partial", "wrong"]
 
@@ -222,7 +222,8 @@ def _current_level(d):
 def _mode(m):
     m = m.lower().replace(" ", "").replace("_", "+").replace("-", "+")
     aliases = {"explain+quiz": "explain+quiz", "interleaved": "explain+quiz", "explainquiz": "explain+quiz",
-               "socratic": "socratic", "quiz": "quiz", "explain": "explain"}
+               "socratic": "socratic", "quiz": "quiz", "explain": "explain",
+               "interrogate": "interrogate", "interrogation": "interrogate", "ask": "interrogate"}
     if m not in aliases:
         sys.exit(f"error: mode must be one of {MODES}")
     return aliases[m]

@@ -5,7 +5,7 @@
     {
       "name": "paper-tutor",
       "source": "./",
-      "description": "Tutor for research papers: arXiv LaTeX fetch, digest, explain/socratic/quiz modes, persistent progress.",
+      "description": "Tutor for research papers: arXiv LaTeX fetch, digest, explain/socratic/quiz/interrogate modes, persistent progress.",
       "version": "0.1.0"
     }
   ]

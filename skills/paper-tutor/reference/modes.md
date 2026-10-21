@@ -6,6 +6,7 @@
 | explain+quiz | you explain a chunk, then user answers | learn and check as you go | yes |
 | socratic | user, guided by your questions | build understanding themselves | no (misconceptions logged) |
 | quiz | user, unaided | test and reinforce | yes |
+| interrogate | user asks, you answer from the paper | drill into what the user cares about | no (questions logged) |
 
 Chunk size scales with level: about a section at L1–3, a subsection or a single result at L4–6,
 a single result or derivation step at L7+.
@@ -70,6 +71,31 @@ No teaching before the answer. Formats:
 - **re-quiz**: take the weak items from `status.py` (each has a qid). Ask a rephrased variant, not
   the verbatim question, so the user cannot answer from memory. Log with `--retry-of <qid>`. For
   misconception items, ask a question that would expose the misconception if it is still there.
+
+## interrogate
+
+The user drives; you are a precise, honest witness for the paper.
+
+- **Answer the question asked, then stop.** No unsolicited next topic. At most one line of
+  "related:" if there is a directly relevant result the user may not know about.
+- **Ground first.** For anything beyond the digest's summary level, read the relevant source
+  (`lookup.py show/proof`, grep) before answering. Quote the exact line for key claims.
+- **Label provenance** for every substantive claim:
+  - *The paper says* — with location (and a short quote when precision matters)
+  - *Follows from* — your derivation from stated results; name them
+  - *Not in the paper* — background knowledge or your opinion; say so
+- **Silence is an answer.** If the paper does not address the question, say "the paper doesn't say";
+  then say what it would take to settle it (an assumption, a cited work, an experiment). Log `open`.
+- **Support drill-down chains.** Follow "why?" back through the dependency graph in the digest
+  (result → lemma → assumption) and say where each link is. Offer to follow a citation into
+  its own paper-tutor session when the answer lives there.
+- **Level** sets the granularity of answers (a level-3 answer to "why does Thm 2 hold?" is an
+  intuition; a level-9 answer walks the proof).
+- **Disagree when warranted.** If the question rests on a misreading, say so and point to the
+  location; if the paper seems wrong, say that too, with your confidence.
+- Log each line of questioning with `--kind asked` and its location, and anything unresolved as
+  `open`. A question that exposes a clear misunderstanding can be logged as `misconception`, which
+  makes it a re-quiz item.
 
 ## Grading rubric (all graded modes)
 
