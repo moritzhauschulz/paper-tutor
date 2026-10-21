@@ -67,15 +67,13 @@ Never put the store inside this skill's directory.
    - Write `digest.md` in the paper folder following `reference/digest-template.md`. This is the
      main product of the first session: be precise, cite locations, flag gaps honestly.
    - Run `log.py digest <paper>`.
-   - Give a 3–5 sentence orientation, then show the **options menu** (below), suggesting
-     *explain+quiz* at level 5 unless the user said otherwise.
+   - Give a 3–5 sentence orientation, then show the **options menu** (below).
 3. **Known paper**:
    - Read `digest.md` (not the full source). If the recap says the digest is missing, build it
      as above. If it is **STALE**, offer to update it against the new version first.
    - Show a short recap: last session (what was covered, open questions, "next"), number of weak
      quiz items, and the suggested next step from the recap.
-   - Then show the **options menu** with a concrete suggestion on top: resume where they left off
-     (with last mode and level), or re-quiz weak items if there are any.
+   - Then show the **options menu** (below).
 4. Once mode and level are settled: `log.py start <paper> --mode <mode> --level <N>`.
 
 If the user's first message already states mode and level, skip the menu and go. If it states only
@@ -83,13 +81,11 @@ one of them, show the menu with that one pre-filled.
 
 ### Options menu
 
-Show this every time a session starts. Fill in the suggestion line and keep the rest verbatim so
-users learn it. Output it as **plain Markdown, not inside a code block**: the two tables render
+Show this every time a session starts, verbatim, so users learn it. Do not add a suggested
+mode or level to it. Output it as **plain Markdown, not inside a code block**: the two tables render
 cleanly in the terminal and in the Claude apps, whereas space-aligned columns collapse.
 
 ```markdown
-**Suggested:** <e.g. "resume at §4 — explain+quiz, level 6" or "explain+quiz, level 5">
-
 | # | Mode | What happens |
 |---|---|---|
 | 1 | **explain** | I explain section by section; you ask along the way |
