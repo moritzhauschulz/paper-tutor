@@ -83,24 +83,30 @@ one of them, show the menu with that one pre-filled.
 
 ### Options menu
 
-Show this every time a session starts (fill in the suggestion line; keep the rest verbatim so users
-learn it). Keep it compact:
+Show this every time a session starts. Fill in the suggestion line and keep the rest verbatim so
+users learn it. Output it as **plain Markdown, not inside a code block**: the two tables render
+cleanly in the terminal and in the Claude apps, whereas space-aligned columns collapse.
 
-```
+```markdown
 **Suggested:** <e.g. "resume at §4 — explain+quiz, level 6" or "explain+quiz, level 5">
 
-**Modes**
-1. explain       I explain section by section; you ask along the way
-2. explain+quiz  I explain a chunk, then ask 1–2 graded questions on it
-3. socratic      you work it out; I only ask guiding questions, never give the answer
-4. quiz          graded questions only (also: teach-back, re-quiz weak items)
-5. interrogate   you drive: ask anything, I answer strictly from the paper, with locations
+| # | Mode | What happens |
+|---|---|---|
+| 1 | **explain** | I explain section by section; you ask along the way |
+| 2 | **explain+quiz** | I explain a chunk, then ask 1–2 graded questions on it |
+| 3 | **socratic** | You work it out; I only ask guiding questions, never give the answer |
+| 4 | **quiz** | Graded questions only (also: teach-back, re-quiz weak items) |
+| 5 | **interrogate** | You drive: ask anything, I answer strictly from the paper, with locations |
 
-**Level 1–10**
-1–2 intuition, no equations · 3–4 setup + key equation · 5–6 full method + assumptions ·
-7–8 derivations, proof sketches · 9–10 line-by-line proofs, gaps, alternatives
+| Level | Depth |
+|---|---|
+| 1–2 | Intuition, no equations |
+| 3–4 | Setup and the key equation |
+| 5–6 | Full method and assumptions |
+| 7–8 | Derivations, proof sketches |
+| 9–10 | Line-by-line proofs, gaps, alternatives |
 
-Reply e.g. "2 6", "socratic 8 on Thm 2", or "interrogate". You can switch mode or level anytime.
+Reply with mode and level, e.g. `2 6`, `socratic 8 on Thm 2`, or `interrogate`. You can switch either at any time.
 ```
 
 For **interrogate**, the level sets answer depth; default to the last used level (or 6) if the
